@@ -1,6 +1,5 @@
-Because I didn't fully understand which type of app I must do (offline console or web),
-I decided to ask the question about it and create a server with nodejs, which could be extend with express for example to client-server app.
-But I got an answer that it must be web app without a backend. So I used "browserify" to bring nodejs to client.
+I decided to create a server with nodejs, which could be extend with express for example to client-server app.
+But web app must be without a backend. So I used "browserify" to bring nodejs to client.
 
 Live DEMO here http://91.206.252.46:8083/
 
