@@ -4,53 +4,56 @@ const currencies = require('./currencies');
 //Checks whole lines
 function checkAddLine(expense) {
     return new Promise(function (resolve, reject) {
-        if (expense.length !== 5) {
-            console.log('Wrong parameters number')
-            reject;
-        } else if (!paramsChecker.checkDate(expense[1])) {
-            console.log('Date problem')
-            reject;
-        } else if (!paramsChecker.checkAmount(expense[2])) {
-            console.log('Amount problem')
-            reject;
-        } else currencies.checkCurrency(expense[3].toUpperCase()).then(function (res) {
+        console.log(expense)
+        if (Object.keys(expense).length !== 5) {
+            reject('Wrong parameters number');
+        } else if (!paramsChecker.checkDate(expense.date)) {
+            reject('Date problem');
+        } else if (!paramsChecker.checkAmount(expense.amount)) {
+            reject('Amount problem');
+        } else currencies.checkCurrency(expense.currency).then(function (res) {
             if (res) {
                 resolve(true);
-            } else reject;
+            }
+        }).catch(function (err) {
+            reject(err)
         })
     })
 }
 
 function checkClearLine(expense) {
     return new Promise(function (resolve, reject) {
-        if (expense.length !== 2) {
+        if (Object.keys(expense).length !== 2) {
             console.log('Wrong parameters number')
-            reject;
-        } else if (!paramsChecker.checkDate(expense[1])) {
+            reject('Wrong parameters number');
+        } else if (!paramsChecker.checkDate(expense.date)) {
             console.log('Date problem')
-            reject;
+            reject('Date problem');
         } else resolve(true);
     })
 }
 
 function checkListLine(expense) {
     return new Promise(function (resolve, reject) {
-        if (expense.length !== 1) {
+        if (Object.keys(expense).length !== 1) {
             console.log('Wrong parameters number')
-            reject;
+            reject('Wrong parameters number');
         } else resolve(true);
     })
 }
 
 function checkTotalLine(expense) {
     return new Promise(function (resolve, reject) {
-        if (expense.length !== 2) {
+        console.log(expense)
+        if (Object.keys(expense).length !== 2) {
             console.log('Wrong parameters number')
-            reject;
-        } else currencies.checkCurrency(expense[1].toUpperCase()).then(function (res) {
+            reject('Wrong parameters number');
+        } else currencies.checkCurrency(expense.currency.toUpperCase()).then(function (res) {
             if (res) {
                 resolve(true);
-            } else reject;
+            }
+        }).catch(function (err) {
+            reject(err);
         })
     })
 }

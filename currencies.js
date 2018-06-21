@@ -11,12 +11,10 @@ getCurrency().then(function (curr) {
 
 function checkCurrency(currencyStr) {
     return new Promise(function (resolve, reject) {
-        if (lodash.has(currencies, currencyStr)) {
-            //console.log('We have that currency');
+        if (lodash.has(currencies, currencyStr.toUpperCase())) {
             resolve(true);
         } else {
-            //console.log("We don't have that currency");
-            resolve(false);
+            reject('Wrong currency');
         }
     });
 }
@@ -25,7 +23,7 @@ function getCurrency() {
     return new Promise(function (resolve, reject) {
         request('http://data.fixer.io/api/latest?access_key=' + fixerioApiKey, {json: true}, (err, res, body) => {
             if (err) {
-                reject;
+                reject("Can't get currency");
             }
             else {
                 resolve(body.rates)

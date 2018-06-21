@@ -8,15 +8,43 @@ console.log(tb)
 
 function checkBrowser() {
     const browser = detect();
-    if (browser) {
-        console.log(browser.name);
-        console.log(browser.version);
-        console.log(browser.os);
-    }
-
     if (browser.name.indexOf('node') > -1) {
         return false;
     } else return true;
+}
+
+function getExpenseCmd(expenseArray) {
+    let exp = new Object();
+    exp.command = expenseArray[0].toUpperCase();
+    switch (exp.command) {
+        case "ADD":
+            if (typeof expenseArray[1] !== 'undefined') {
+                exp.date = expenseArray[1];
+            }
+            if (typeof expenseArray[2] !== 'undefined') {
+                exp.amount = expenseArray[2];
+            }
+            if (typeof expenseArray[3] !== 'undefined') {
+                exp.currency = expenseArray[3].toUpperCase();
+            }
+            if (typeof expenseArray[4] !== 'undefined') {
+                exp.name = expenseArray[4];
+            }
+            break;
+        case "LIST":
+            break;
+        case "CLEAR":
+            if (typeof expenseArray[1] !== 'undefined') {
+                exp.date = expenseArray[1];
+            }
+            break;
+        case "TOTAL":
+            if (typeof expenseArray[1] !== 'undefined') {
+                exp.currency = expenseArray[1].toUpperCase();
+            }
+            break;
+    }
+    return exp;
 }
 
 function outputData(expensesArray) {
@@ -25,7 +53,6 @@ function outputData(expensesArray) {
         let node = document.createElement("LI");
         let expenseAttr = Object.values(expensesArray[expense]); //Output all attribites
         for (let attr in expenseAttr) {
-            console.log('attr', expenseAttr[attr])
             node.appendChild(document.createTextNode(expenseAttr[attr] + ' '));
         }
         outputElement.appendChild(node)
@@ -52,45 +79,50 @@ window.inputKeypress = function (e) {
 }
 
 function parseLine(expenseLine) {
-    var parsedExpense = [];
-    expenseLine.split(" ").map(res => {
-        parsedExpense.push(res);
-    })
+    var parsedExpense = {};
+    parsedExpense = getExpenseCmd(expenseLine.split(" "));
 
-    var command;
-    if (parsedExpense.length > 0) {
-        command = parsedExpense[0];
-    } else return;
+    if (parsedExpense.length === 0) {
+       return
+    }
 
-    switch (command) {
-        case "add":
+    switch (parsedExpense.command) {
+        case "ADD":
             lineChecker.checkAddLine(parsedExpense).then(function (res) {
                 if (res) {
                     outputData(db.addExpense(parsedExpense));
                 }
+            }).catch(function (err) {
+                alert(err)
             })
             break;
-        case "list":
+        case "LIST":
             lineChecker.checkListLine(parsedExpense).then(function (res) {
                 if (res) {
                     // console.log(db.listAllExpense(parsedExpense));
                     outputData(db.listAllExpense(parsedExpense));
                 }
+            }).catch(function (err) {
+                alert(err)
             })
             break;
-        case "clear":
+        case "CLEAR":
             lineChecker.checkClearLine(parsedExpense).then(function (res) {
                 if (res) {
                     db.clearExpense(parsedExpense);
                     outputData(db.listAllExpense(parsedExpense));
                 }
+            }).catch(function (err) {
+                alert(err)
             })
             break;
-        case "total":
+        case "TOTAL":
             lineChecker.checkTotalLine(parsedExpense).then(function (res) {
                 if (res) {
                     outputData(db.totalExpense(parsedExpense));
                 }
+            }).catch(function (err) {
+                alert(err)
             })
             break;
         default:

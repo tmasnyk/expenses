@@ -20,10 +20,10 @@ function isBrowser() {
 function addExpense(expense) {
     const exp = db.get('expenses')
         .push({
-            date: expense[1],
-            amount: expense[2],
-            currency: expense[3].toUpperCase(),
-            name: expense[4]
+            date: expense.date,
+            amount: expense.amount,
+            currency: expense.currency,
+            name: expense.name
         })
         .write()
     console.log(exp);
@@ -32,7 +32,7 @@ function addExpense(expense) {
 
 function clearExpense(expense) {
     return db.get('expenses')
-        .remove({date: expense[1]})
+        .remove({date: expense.date})
         .write()
 }
 
@@ -43,17 +43,17 @@ function totalExpense(expense) {
         .value()
         .map(exp => {
             //console.log(exp)
-            if (exp.currency.indexOf(expense[1].toUpperCase()) > -1) {
+            if (exp.currency.indexOf(expense.currency.toUpperCase()) > -1) {
                 total += parseFloat(exp.amount);
             } else {
-                total += currencies.convertCurrency(exp.currency, expense[1], exp.amount);
+                total += currencies.convertCurrency(exp.currency, expense.currency, exp.amount);
             }
 
         });
     console.log(Number(total.toFixed(2)));
     resp.push({
         amount: Number(total.toFixed(2)),
-        currency: expense[1]
+        currency: expense.currency
     });
     return resp;
 }
