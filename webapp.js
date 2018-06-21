@@ -1,33 +1,55 @@
-
+const {detect} = require('detect-browser');
 const lineChecker = require('./lineChecker');
 const db = require('./db');
 
+checkBrowser();
+var tb = document.getElementById("commandLineElement");
+console.log(tb)
 
-/*showHelpBanner();
-startConsole();*/
-console.log('WebApp')
+function checkBrowser() {
+    const browser = detect();
+    if (browser) {
+        console.log(browser.name);
+        console.log(browser.version);
+        console.log(browser.os);
+    }
 
-
-
-function showHelpBanner() {
-    console.log('***********************************');
-    console.log('********Commands Example***********');
-    console.log('* add 2017-04-26 12.44 USD Jogurt *');
-    console.log('* clear 2017-04-26 ****************');
-    console.log('* list ****************************');
-    console.log('* total EUR ***********************');
-    console.log('***********************************');
+    if (browser.name.indexOf('node') > -1) {
+        return false;
+    } else return true;
 }
 
-function  startConsole() {
-    var stdin = process.openStdin();
-    stdin.addListener("data", function (line) {
-        console.log('_______________________');
-        parseLine(line.toString().trim())
-    });
+function outputData(expensesArray) {
+    var outputElement = document.getElementById("outputElement");
+    for (let expense in expensesArray) {
+        let node = document.createElement("LI");
+        let expenseAttr = Object.values(expensesArray[expense]); //Output all attribites
+        for (let attr in expenseAttr) {
+            console.log('attr', expenseAttr[attr])
+            node.appendChild(document.createTextNode(expenseAttr[attr] + ' '));
+        }
+        outputElement.appendChild(node)
+    }
+
+
 }
 
+window.inputKeypress = function (e) {
+    var outputElement = document.getElementById("outputElement");
+    if (e.keyCode == 13) {
+        var tb = document.getElementById("commandLineElement");
+        var node = document.createElement("P");
+        var textnode = document.createTextNode(tb.value);
+        node.appendChild(textnode);
 
+        parseLine(tb.value);
+        outputElement.appendChild(node);
+        tb.value = "";
+        return false;
+    }
+
+
+}
 
 function parseLine(expenseLine) {
     var parsedExpense = [];
@@ -38,50 +60,45 @@ function parseLine(expenseLine) {
     var command;
     if (parsedExpense.length > 0) {
         command = parsedExpense[0];
-    } else exit(0);
+    } else return;
 
     switch (command) {
         case "add":
             lineChecker.checkAddLine(parsedExpense).then(function (res) {
                 if (res) {
-                    db.addExpense(parsedExpense);
+                    outputData(db.addExpense(parsedExpense));
                 }
             })
             break;
         case "list":
             lineChecker.checkListLine(parsedExpense).then(function (res) {
                 if (res) {
-                    db.listAllExpense(parsedExpense);
+                    // console.log(db.listAllExpense(parsedExpense));
+                    outputData(db.listAllExpense(parsedExpense));
                 }
             })
             break;
         case "clear":
             lineChecker.checkClearLine(parsedExpense).then(function (res) {
                 if (res) {
-                    db.clearExpense(parsedExpense)
+                    db.clearExpense(parsedExpense);
+                    outputData(db.listAllExpense(parsedExpense));
                 }
             })
             break;
         case "total":
             lineChecker.checkTotalLine(parsedExpense).then(function (res) {
                 if (res) {
-                    db.totalExpense(parsedExpense);
+                    outputData(db.totalExpense(parsedExpense));
                 }
             })
             break;
         default:
-            console.log('Incorrect command line');
+            alert('Incorrect command line');
             break;
     }
 }
 
-
-
-//Check params
-
-
-
-//External resource
 
 
 

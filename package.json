@@ -8,6 +8,7 @@
   },
   "author": "Masnyk Taras",
   "dependencies": {
+    "detect-browser": "^2.5.1",
     "lodash": "^4.17.10",
     "lowdb": "^1.0.0",
     "request": "^2.87.0"
