@@ -33,7 +33,7 @@ describe('Db tests', function () {
         done();
     });
 
-    it('add to db should return array exp objects with added object', function(done) {
+    it('clear expenses  should return array exp objects or empty array', function(done) {
         const exp = {
             date: '2017-10-10',
             amount: 12,
