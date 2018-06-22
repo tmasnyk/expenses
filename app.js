@@ -1,25 +1,10 @@
-const {detect} = require('detect-browser');
 const lineChecker = require('./lineChecker');
 const db = require('./db');
 
 
-checkBrowser();
 showHelpBanner();
 startConsole();
 
-
-function checkBrowser() {
-    const browser = detect();
-    if (browser) {
-        console.log(browser.name);
-        console.log(browser.version);
-        console.log(browser.os);
-    }
-
-    if (browser.name.indexOf('node') > -1) {
-        return false;
-    } else return true;
-}
 
 function showHelpBanner() {
     console.log('***********************************');
@@ -39,7 +24,7 @@ function startConsole() {
     });
 }
 
-function getExpenseCmd(expenseArray) {
+function getExpenseObj(expenseArray) {
     let exp = new Object();
     exp.command = expenseArray[0].toUpperCase();
     switch (exp.command) {
@@ -75,44 +60,34 @@ function getExpenseCmd(expenseArray) {
 
 
 function parseLine(expenseLine) {
-    var parsedExpense = {};
-    parsedExpense = getExpenseCmd(expenseLine.split(" "));
-    console.log(Object.keys(parsedExpense).length)
-
-
-    switch (parsedExpense.command) {
+    var expenseObj;
+    expenseObj = getExpenseObj(expenseLine.split(" "));
+    switch (expenseObj.command) {
         case "ADD":
-            lineChecker.checkAddLine(parsedExpense).then(function (res) {
-                if (res) {
-                    db.addExpense(parsedExpense);
-                }
+            lineChecker.checkAddLine(expenseObj).then(function () {
+                console.log(db.addExpense(expenseObj));
             }).catch(function (err) {
                 console.log(err);
             })
             break;
         case "LIST":
-            lineChecker.checkListLine(parsedExpense).then(function (res) {
-                if (res) {
-                    db.listAllExpense(parsedExpense);
-                }
+            lineChecker.checkListLine(expenseObj).then(function () {
+                console.log(db.listAllExpense(expenseObj));
             }).catch(function (err) {
                 console.log(err);
             })
             break;
         case "CLEAR":
-            lineChecker.checkClearLine(parsedExpense).then(function (res) {
-                if (res) {
-                    db.clearExpense(parsedExpense)
-                }
+            lineChecker.checkClearLine(expenseObj).then(function () {
+                db.clearExpense(expenseObj);
+                console.log(db.listAllExpense(expenseObj));
             }).catch(function (err) {
                 console.log(err);
             })
             break;
         case "TOTAL":
-            lineChecker.checkTotalLine(parsedExpense).then(function (res) {
-                if (res) {
-                    db.totalExpense(parsedExpense);
-                }
+            lineChecker.checkTotalLine(expenseObj).then(function () {
+                console.log(db.totalExpense(expenseObj));
             }).catch(function (err) {
                 console.log(err);
             })

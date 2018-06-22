@@ -1,10 +1,9 @@
 const paramsChecker = require('./paramsChecker');
 const currencies = require('./currencies');
 
-//Checks whole lines
+
 function checkAddLine(expense) {
     return new Promise(function (resolve, reject) {
-        console.log(expense)
         if (Object.keys(expense).length !== 5) {
             reject('Wrong parameters number');
         } else if (!paramsChecker.checkDate(expense.date)) {
@@ -24,10 +23,8 @@ function checkAddLine(expense) {
 function checkClearLine(expense) {
     return new Promise(function (resolve, reject) {
         if (Object.keys(expense).length !== 2) {
-            console.log('Wrong parameters number')
             reject('Wrong parameters number');
         } else if (!paramsChecker.checkDate(expense.date)) {
-            console.log('Date problem')
             reject('Date problem');
         } else resolve(true);
     })
@@ -36,7 +33,6 @@ function checkClearLine(expense) {
 function checkListLine(expense) {
     return new Promise(function (resolve, reject) {
         if (Object.keys(expense).length !== 1) {
-            console.log('Wrong parameters number')
             reject('Wrong parameters number');
         } else resolve(true);
     })
@@ -44,9 +40,7 @@ function checkListLine(expense) {
 
 function checkTotalLine(expense) {
     return new Promise(function (resolve, reject) {
-        console.log(expense)
         if (Object.keys(expense).length !== 2) {
-            console.log('Wrong parameters number')
             reject('Wrong parameters number');
         } else currencies.checkCurrency(expense.currency.toUpperCase()).then(function (res) {
             if (res) {

@@ -9,7 +9,7 @@ initDB();
 
 function isBrowser() {
     const browser = detect();
-    if (browser.name.indexOf('node') > -1) {
+    if (browser && browser.name.indexOf('node') > -1) {
         return false;
     } else {
         return true;
@@ -26,7 +26,6 @@ function addExpense(expense) {
             name: expense.name
         })
         .write()
-    console.log(exp);
     return(exp);
 }
 
@@ -42,7 +41,6 @@ function totalExpense(expense) {
     db.get('expenses')
         .value()
         .map(exp => {
-            //console.log(exp)
             if (exp.currency.indexOf(expense.currency.toUpperCase()) > -1) {
                 total += parseFloat(exp.amount);
             } else {
@@ -50,7 +48,6 @@ function totalExpense(expense) {
             }
 
         });
-    console.log(Number(total.toFixed(2)));
     resp.push({
         amount: Number(total.toFixed(2)),
         currency: expense.currency
@@ -61,7 +58,7 @@ function totalExpense(expense) {
 function listAllExpense() {
     const exp = db.get('expenses')
         .value()
-    console.log(exp)
+    //console.log(exp)
     return exp;
 }
 

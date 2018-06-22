@@ -1,19 +1,8 @@
-const {detect} = require('detect-browser');
 const lineChecker = require('./lineChecker');
 const db = require('./db');
 
-checkBrowser();
-var tb = document.getElementById("commandLineElement");
-console.log(tb)
-
-function checkBrowser() {
-    const browser = detect();
-    if (browser.name.indexOf('node') > -1) {
-        return false;
-    } else return true;
-}
-
-function getExpenseCmd(expenseArray) {
+//Parse commandline into object
+function getExpenseObj(expenseArray) {
     let exp = new Object();
     exp.command = expenseArray[0].toUpperCase();
     switch (exp.command) {
@@ -51,75 +40,52 @@ function outputData(expensesArray) {
     var outputElement = document.getElementById("outputElement");
     for (let expense in expensesArray) {
         let node = document.createElement("LI");
-        let expenseAttr = Object.values(expensesArray[expense]); //Output all attribites
+        let expenseAttr = Object.values(expensesArray[expense]);
         for (let attr in expenseAttr) {
             node.appendChild(document.createTextNode(expenseAttr[attr] + ' '));
         }
         outputElement.appendChild(node)
     }
-
-
 }
 
-window.inputKeypress = function (e) {
-    var outputElement = document.getElementById("outputElement");
-    if (e.keyCode == 13) {
-        var tb = document.getElementById("commandLineElement");
-        var node = document.createElement("P");
-        var textnode = document.createTextNode(tb.value);
-        node.appendChild(textnode);
-
-        parseLine(tb.value);
-        outputElement.appendChild(node);
-        tb.value = "";
-        return false;
-    }
-
-
-}
-
+//Parse commandline
 function parseLine(expenseLine) {
-    var parsedExpense = {};
-    parsedExpense = getExpenseCmd(expenseLine.split(" "));
+    var expenseObj;
+    expenseObj = getExpenseObj(expenseLine.split(" "));
 
-    if (parsedExpense.length === 0) {
-       return
-    }
-
-    switch (parsedExpense.command) {
+    switch (expenseObj.command) {
         case "ADD":
-            lineChecker.checkAddLine(parsedExpense).then(function (res) {
+            lineChecker.checkAddLine(expenseObj).then(function (res) {
                 if (res) {
-                    outputData(db.addExpense(parsedExpense));
+                    outputData(db.addExpense(expenseObj));
                 }
             }).catch(function (err) {
                 alert(err)
             })
             break;
         case "LIST":
-            lineChecker.checkListLine(parsedExpense).then(function (res) {
+            lineChecker.checkListLine(expenseObj).then(function (res) {
                 if (res) {
-                    // console.log(db.listAllExpense(parsedExpense));
-                    outputData(db.listAllExpense(parsedExpense));
+                    outputData(db.listAllExpense(expenseObj));
                 }
             }).catch(function (err) {
                 alert(err)
             })
             break;
         case "CLEAR":
-            lineChecker.checkClearLine(parsedExpense).then(function (res) {
+            lineChecker.checkClearLine(expenseObj).then(function (res) {
                 if (res) {
-                    db.clearExpense(parsedExpense);
-                    outputData(db.listAllExpense(parsedExpense));
+                    db.clearExpense(expenseObj);
+                    outputData(db.listAllExpense(expenseObj));
                 }
             }).catch(function (err) {
                 alert(err)
             })
             break;
         case "TOTAL":
-            lineChecker.checkTotalLine(parsedExpense).then(function (res) {
+            lineChecker.checkTotalLine(expenseObj).then(function (res) {
                 if (res) {
-                    outputData(db.totalExpense(parsedExpense));
+                    outputData(db.totalExpense(expenseObj));
                 }
             }).catch(function (err) {
                 alert(err)
@@ -128,6 +94,21 @@ function parseLine(expenseLine) {
         default:
             alert('Incorrect command line');
             break;
+    }
+}
+
+window.inputKeypress = function (e) {
+    var outputElement = document.getElementById("outputElement");
+    if (e.keyCode == 13) {
+        var input = document.getElementById("commandLineElement");
+        var node = document.createElement("P");
+        var textnode = document.createTextNode(input.value);
+        node.appendChild(textnode);
+
+        parseLine(input.value);
+        outputElement.appendChild(node);
+        input.value = "";
+        return false;
     }
 }
 
