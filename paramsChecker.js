@@ -8,7 +8,7 @@ function checkDate(dateStr) {
 }
 
 function checkAmount(amountStr) {
-    var numReg = /\d*\.?\d*$/
+    var numReg = /^[1-9]\d*.?\d*/
     if (numReg.test(amountStr)) {
         return true;
     } else {
