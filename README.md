@@ -10,6 +10,8 @@ For build web version clone project and run npm install.
 Then run browserify webapp.js > bundle.js
 Start app => index.html
 
+Run "npm test" for testing
+
 Comments:
  - This project can't be used in production because it can have performance problems. For example, if there will be a huge number of records.
    It can be solved by limiting the sample period.

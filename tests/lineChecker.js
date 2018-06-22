@@ -1,11 +1,10 @@
-const assert = require('assert');
 const expect = require('expect.js')
 const lineChecker = require('../lineChecker');
 
 
 describe('add commandline checker Tests', function () {
     it('right object add resolve true', function (done) {
-        lineChecker.checkAddLine({
+         lineChecker.checkAddLine({
             command: 'ADD',
             date: '2017-10-10',
             amount: 100.10,
@@ -27,7 +26,7 @@ describe('add commandline checker Tests', function () {
             currency: 'USD',
             name: 'iphone'
         }).then(function (res) {
-            //expect(result).to.equal('Da problem');
+            throw ('Error');
         }).catch(function (err) {
             expect(err).to.equal('Date problem');
         })
@@ -42,7 +41,7 @@ describe('add commandline checker Tests', function () {
             currency: 'USD',
             name: 'iphone'
         }).then(function (res) {
-            //expect(result).to.equal('Da problem');
+            throw ('Error');
         }).catch(function (err) {
             expect(err).to.equal('Amount problem');
         })
@@ -57,7 +56,7 @@ describe('add commandline checker Tests', function () {
             currency: 'USD',
             name: 'iphone'
         }).then(function (res) {
-
+            throw ('Error');
         }).catch(function (err) {
             expect(err).to.equal('Wrong currency' || "Can't get currency");
         })
@@ -80,11 +79,11 @@ describe('clear commandline checker Tests', function () {
     });
 
     it('wrong expense object parameter will reject with problem cause (date)', function (done) {
-        lineChecker.checkClearLine({
+         lineChecker.checkClearLine({
             command: 'CLEAR',
-            date: '2017-10-10',
+            date: '2017.10.10',
         }).then(function (res) {
-
+            throw ('Error');
         }).catch(function (err) {
             expect(err).to.equal('Date problem');
         })
@@ -95,7 +94,7 @@ describe('clear commandline checker Tests', function () {
         lineChecker.checkClearLine({
             command: 'CLEAR'
         }).then(function (res) {
-
+            throw ('Error');
         }).catch(function (err) {
             expect(err).to.equal('Wrong parameters number');
         })
@@ -122,7 +121,7 @@ describe('total commandline checker Tests', function () {
             command: 'TOTAL',
             currency: 'UAA',
         }).then(function (res) {
-
+            throw ('Error');
         }).catch(function (err) {
             expect(err).to.equal('Wrong currency');
         })
@@ -133,7 +132,7 @@ describe('total commandline checker Tests', function () {
         lineChecker.checkTotalLine({
             command: 'TOTAL'
         }).then(function (res) {
-
+            throw ('Error');
         }).catch(function (err) {
             expect(err).to.equal('Wrong parameters number');
         })

@@ -1,9 +1,5 @@
-const assert = require('assert');
 const chai = require('chai');
 const expect = require('chai').expect;
-var chaiMatchPattern = require('chai-match-pattern');
-var _ = chaiMatchPattern.getLodashModule();
-
 const assertArrays = require('chai-arrays');
 chai.use(assertArrays);
 

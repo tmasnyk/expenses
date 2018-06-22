@@ -1,9 +1,9 @@
 const low = require('lowdb')
 const {detect} = require('detect-browser');
-
-
 const currencies = require('./currencies');
+
 var db;
+
 //init empty db
 initDB();
 
@@ -60,7 +60,6 @@ function totalExpense(expense) {
 function listAllExpense() {
     const exp = db.get('expenses')
         .value()
-    //console.log(exp)
     return exp;
 }
 

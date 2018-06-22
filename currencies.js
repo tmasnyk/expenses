@@ -33,6 +33,7 @@ function getCurrency() {
 }
 
 function convertCurrency(from, to, amount) {
+
     return (amount / currencies[from] * currencies[to]);
 }
 
