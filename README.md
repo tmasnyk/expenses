@@ -4,7 +4,7 @@ But web app must be without a backend. So I used "browserify" to bring nodejs to
 Live DEMO here http://91.206.252.46:8083/
 
 For build console version clone project and run npm install.
-Start => node app.js
+Start => npm start
 
 For build web version clone project and run npm install.
 Then run browserify webapp.js > bundle.js
