@@ -8,10 +8,12 @@ function checkDate(dateStr) {
 }
 
 function checkAmount(amountStr) {
-    var numReg = /^-?\d*\.?\d*$/
+    var numReg = /\d*\.?\d*$/
     if (numReg.test(amountStr)) {
         return true;
-    } else return false;
+    } else {
+        return false;
+    }
 }
 
 module.exports.checkDate = checkDate;
