@@ -33121,6 +33121,7 @@ function getCurrency() {
 }
 
 function convertCurrency(from, to, amount) {
+
     return (amount / currencies[from] * currencies[to]);
 }
 
@@ -33130,10 +33131,10 @@ module.exports.checkCurrency = checkCurrency;
 },{"lodash":299,"request":315}],192:[function(require,module,exports){
 const low = require('lowdb')
 const {detect} = require('detect-browser');
-
-
 const currencies = require('./currencies');
+
 var db;
+
 //init empty db
 initDB();
 
@@ -33190,7 +33191,6 @@ function totalExpense(expense) {
 function listAllExpense() {
     const exp = db.get('expenses')
         .value()
-    //console.log(exp)
     return exp;
 }
 
@@ -88173,20 +88173,12 @@ WError.prototype.cause = function we_cause(c)
 },{"assert-plus":240,"core-util-is":249,"extsprintf":256,"util":188}],369:[function(require,module,exports){
 function checkDate(dateStr) {
     var dateReg = /^\d{4}\-\d{1,2}\-\d{1,2}$/
-    if (dateReg.test(dateStr)) {
-        return true;
-    } else {
-        return false;
-    }
+    return dateReg.test(dateStr);
 }
 
 function checkAmount(amountStr) {
     var numReg = /^(?:[1-9]\d*|0)?(?:\.\d+)?$/
-    if (numReg.test(amountStr)) {
-        return true;
-    } else {
-        return false;
-    }
+    return numReg.test(amountStr)
 }
 
 module.exports.checkDate = checkDate;
