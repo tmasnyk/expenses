@@ -33131,6 +33131,7 @@ module.exports.checkCurrency = checkCurrency;
 const low = require('lowdb')
 const {detect} = require('detect-browser');
 
+
 const currencies = require('./currencies');
 var db;
 //init empty db
@@ -33148,7 +33149,7 @@ function isBrowser() {
 
 //Run commands
 function addExpense(expense) {
-    const exp = db.get('expenses')
+    return exp = db.get('expenses')
         .push({
             date: expense.date,
             amount: expense.amount,
@@ -33156,13 +33157,14 @@ function addExpense(expense) {
             name: expense.name
         })
         .write()
-    return(exp);
 }
 
 function clearExpense(expense) {
-    return db.get('expenses')
+    const exp = db.get('expenses')
         .remove({date: expense.date})
         .write()
+    console.log('Clear', exp)
+    return exp
 }
 
 function totalExpense(expense) {
@@ -33171,7 +33173,7 @@ function totalExpense(expense) {
     db.get('expenses')
         .value()
         .map(exp => {
-            if (exp.currency.indexOf(expense.currency.toUpperCase()) > -1) {
+            if (exp.currency.indexOf(expense.currency) > -1) {
                 total += parseFloat(exp.amount);
             } else {
                 total += currencies.convertCurrency(exp.currency, expense.currency, exp.amount);
@@ -88179,10 +88181,12 @@ function checkDate(dateStr) {
 }
 
 function checkAmount(amountStr) {
-    var numReg = /^-?\d*\.?\d*$/
+    var numReg = /^(?:[1-9]\d*|0)?(?:\.\d+)?$/
     if (numReg.test(amountStr)) {
         return true;
-    } else return false;
+    } else {
+        return false;
+    }
 }
 
 module.exports.checkDate = checkDate;
