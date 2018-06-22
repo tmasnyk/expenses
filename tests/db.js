@@ -18,9 +18,7 @@ describe('Db tests', function () {
             currency: 'USD',
             name: 'phone' + Math.random()
         }
-        //Add some data if db is empty
-        db.addExpense(exp);
-        expect(db.listAllExpense()).to.have.deep.include(exp);
+        expect(db.listAllExpense()).to.be.array();
         done();
     });
 
